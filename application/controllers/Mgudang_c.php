@@ -20,46 +20,68 @@ class Mgudang_c extends CI_Controller
 
 	public function Tambah()
 	{
-		$data['Content'] = "Gudang/GudangTambah";
+		$data = array(
+			'id' => '',
+			'nama' => '',
+			'keterangan' => '',
+			'status' => '',
+		);
+		$data['Title'] = "Tambah Gudang";
+		$data['Content'] = "Gudang/GudangManage";
 
 		$this->load->view('layouts/template',$data);
 	}
 
-	public function SubmitBaru()
+	public function Submit()
 	{
-		$record = array('nama' => $this->input->post('nmgudang'),
-						'keterangan' => $this->input->post('ktgudang'),
-						'status' => 1 
-		);
+		$idGudang = $this->input->post('idgudang');
 
-		$result = $this->mGudang->_TambahGudang($record);
-		if ($result) { redirect(base_url('Mgudang_c/index')); } else { return false; }
+		if ($idGudang == null) {
+			$record = array('nama' => $this->input->post('nmgudang'),
+							'keterangan' => $this->input->post('ktgudang'),
+							'status' => 1 
+			);
+
+			$result = $this->mGudang->_TambahGudang($record);
+			if ($result) { redirect(base_url('mgudang_c/index')); } else { return false; }
+
+		} else {
+			$record = array('nama' => $this->input->post('nmgudang'),
+							'keterangan' => $this->input->post('ktgudang'),
+							'status' => 1
+			);
+
+			$result = $this->mGudang->_UpdateGudang($idGudang,$record);
+			if ($result) { redirect(base_url('mgudang_c/index')); } else { return false; }
+
+		}
+		
 	}
 
 	public function Edit($idGudang)
 	{
+		$value = $this->mGudang->getGudangID($idGudang);
+
+		if ($value) {
+			$data = array(
+				'id' => $value->id,
+				'nama' => $value->nama,
+				'keterangan' => $value->keterangan,
+				'status' => $value->status,
+			);
+		}
+
+		$data['Title'] = "Edit Gudang";
 		$data['DataGudang'] = $this->mGudang->getGudangID($idGudang);
-		$data['Content'] = "Gudang/GudangEdit";
+		$data['Content'] = "Gudang/GudangManage";
 
 		$this->load->view('layouts/template',$data);
-	}
-
-	public function SubmitEdit()
-	{
-		$idGudang = $this->input->post('idgudang');
-		$record = array('nama' => $this->input->post('nmgudang'),
-						'keterangan' => $this->input->post('ktgudang'),
-						'status' => 1
-		);
-
-		$result = $this->mGudang->_UpdateGudang($idGudang,$record);
-		if ($result) { redirect(base_url('Mgudang_c/index')); } else { return false; }
 	}
 
 	public function Hapus($idGudang)
 	{
 		$result = $this->mGudang->_HapusGudang($idGudang);
-		if ($result) { redirect(base_url('Mgudang_c/index')); } else { return false; }
+		if ($result) { redirect(base_url('mgudang_c/index')); } else { return false; }
 	}
 }
 

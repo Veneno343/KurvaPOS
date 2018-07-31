@@ -20,50 +20,59 @@ class Msupplier_c extends CI_Controller
 
 	public function Tambah()
 	{
-		$data['Content'] = "Supplier/SupplierTambah";
+		$data['Content'] = "Supplier/SupplierManage";
 
 		$this->load->view('layouts/template',$data);
 	}
 
-	public function SubmitBaru()
+	public function Submit()
 	{
-		$record = array('nama' => $this->input->post('nmsupplier'),
+		$idSupplier = $this->input->post('idsupplier');
+		if($idSupplier == null) {
+			$record = array('nama' => $this->input->post('nmsupplier'),
 						'alamat' => $this->input->post('adrsupplier'),
 						'telepon' => $this->input->post('telpsupplier'),
 						'email' => $this->input->post('emailsupplier'),
 						'status' => 1 
-		);
+			);
 
-		$result = $this->mSupplier->_TambahSupplier($record);
-		if ($result) { redirect(base_url('Msupplier_c/index')); } else { return false; }
+			$result = $this->mSupplier->_TambahSupplier($record);
+			if ($result) { redirect(base_url('msupplier_c/index')); } else { return false; }
+		
+		} else {
+			$record = array('nama' => $this->input->post('nmsupplier'),
+						'alamat' => $this->input->post('adrsupplier'),
+						'telepon' => $this->input->post('telpsupplier'),
+						'email' => $this->input->post('emailsupplier'),
+						'status' => 1 
+			);
+
+			$result = $this->mSupplier->_UpdateSupplier($idSupplier,$record);
+			if ($result) { redirect(base_url('msupplier_c/index')); } else { return false; }
+		}
 	}
 
 	public function Edit($idsupplier)
 	{
-		$data['DataSupplier'] = $this->mSupplier->getSupplierID($idsupplier);
-		$data['Content'] = "Supplier/SupplierEdit";
+		$value = $this->mSupplier->getSupplierID($idsupplier);
+		$data = array('id' => $value->id,
+					  'nama' => $value->nama, 
+					  'alamat' => $value->alamat,
+					  'telepon' => $value->telepon,
+					  'email' => $value->email,
+					  'status' => $value->status,
+				);
+
+		$data['Title'] = "Edit Supplier";
+		$data['Content'] = "Supplier/SupplierManage";
 
 		$this->load->view('layouts/template',$data);
-	}
-
-	public function SubmitEdit()
-	{
-		$idSupplier = $this->input->post('idsupplier');
-		$record = array('nama' => $this->input->post('nmsupplier'),
-						'alamat' => $this->input->post('adrsupplier'),
-						'telepon' => $this->input->post('telpsupplier'),
-						'email' => $this->input->post('emailsupplier'),
-						'status' => 1 
-		);
-
-		$result = $this->mSupplier->_UpdateSupplier($idSupplier,$record);
-		if ($result) { redirect(base_url('Msupplier_c/index')); } else { return false; }
 	}
 
 	public function Hapus($idSupplier)
 	{
 		$result = $this->mSupplier->_HapusSupplier($idSupplier);
-		if ($result) { redirect(base_url('Msupplier_c/index')); } else { return false; }
+		if ($result) { redirect(base_url('msupplier_c/index')); } else { return false; }
 	}
 }
 

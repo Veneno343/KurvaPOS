@@ -36,8 +36,8 @@
               <td><?php echo $Gudang->nama; ?></td>
               <td><?php echo $Gudang->keterangan; ?></td>
               <td>
-                  <a href="<?php echo base_url('mGudang_c/Edit/'.$Gudang->id); ?>" id="editGudang" class="btn btn-outline rounded b-warning text-warning"><i class="fa fa-pencil"></i></a>
-                  <a onclick="return confirm('Hapus data yang dipilih?')" href="<?php echo base_url('mGudang_c/Hapus/'.$Gudang->id); ?>" id="hapusGudang" class="btn btn-outline rounded b-danger text-danger"><i class="fa fa-trash"></i></a>
+                  <a href="<?php echo base_url('mgudang_c/Edit/'.$Gudang->id); ?>" id="editGudang" class="btn btn-outline rounded b-warning text-warning"><i class="fa fa-pencil"></i></a>
+                  <a onclick="return confirm('Hapus data yang dipilih?')" href="<?php echo base_url('mgudang_c/Hapus/'.$Gudang->id); ?>" id="hapusGudang" class="btn btn-outline rounded b-danger text-danger"><i class="fa fa-trash"></i></a>
                 
             </td>
           </tr>

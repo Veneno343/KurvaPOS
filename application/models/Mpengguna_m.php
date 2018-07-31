@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script are allowed');
 
-class MPengguna_m extends CI_Model
+class Mpengguna_m extends CI_Model
 {
     public function getPengguna()
     {

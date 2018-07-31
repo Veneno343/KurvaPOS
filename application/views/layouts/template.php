@@ -118,7 +118,7 @@
               </li>
               
               <li>
-                <a href="app.project.html" class="b-success">
+                <a href="<?php echo base_url('tpembelian_c/index') ?>" class="b-success">
                     <span class="nav-icon text-white no-fade">
                     <i class="fa fa-credit-card"></i>
                     </span>
@@ -231,6 +231,8 @@
   <script src="<?php echo base_url('assets/scripts/ui-taburl.js') ?> "></script>
   <script src="<?php echo base_url('assets/scripts/app.js') ?> "></script>
   <script src="<?php echo base_url('assets/scripts/ajax.js') ?> "></script>
-<!-- endbuild -->
+  <script type="text/javascript" src="<?php echo base_url(); ?>assets/libs/qrcode/jquery.qrcode.js"></script>
+  <script type="text/javascript" src="<?php echo base_url(); ?>assets/libs/qrcode/qrcode.js"></script>
+  <!-- endbuild -->
 </body>
 </html>

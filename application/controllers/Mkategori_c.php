@@ -20,46 +20,63 @@ class Mkategori_c extends CI_Controller
 
 	public function Tambah()
 	{
-		$data['Content'] = "Kategori/KategoriTambah";
+		$data = array(
+			'id' => '',
+			'nama' => '',
+			'keterangan' => '',
+			'status' => '',
+		);
+
+		$data['Title'] = "Tambah Kategori";
+		$data['Content'] = "Kategori/KategoriManage";
 
 		$this->load->view('layouts/template',$data);
 	}
 
-	public function SubmitBaru()
+	public function Submit()
 	{
-		$record = array('nama' => $this->input->post('nmkategori'),
+		$idkategori = $this->input->post('idkategori');
+
+		if ($idkategori == null) {
+			$record = array('nama' => $this->input->post('nmkategori'),
 						'keterangan' => $this->input->post('ktkategori'),
 						'status' => 1 
-		);
+			);
 
-		$result = $this->mKategori->_TambahKategori($record);
-		if ($result) { redirect(base_url('Mkategori_c/index')); } else { return false; }
+			$result = $this->mKategori->_TambahKategori($record);
+			if ($result) { redirect(base_url('mkategori_c/index')); } else { return false; }
+		} else { 
+			$record = array('nama' => $this->input->post('nmkategori'),
+						'keterangan' => $this->input->post('ktkategori'),
+						'status' => 1
+			);
+
+			$result = $this->mKategori->_UpdateKategori($idkategori,$record);
+			if ($result) { redirect(base_url('mkategori_c/index')); } else { return false; }
+		}		
 	}
 
 	public function Edit($idkategori)
 	{
-		$data['DataKategori'] = $this->mKategori->getKategoriID($idkategori);
-		$data['Content'] = "Kategori/KategoriEdit";
+		$value = $this->mKategori->getKategoriID($idkategori);
+
+		$data = array(
+			'id' => $value->id,
+			'nama' => $value->nama,
+			'keterangan' => $value->keterangan,
+			'status' => $value->status,
+		);
+		
+		$data['Title'] = "Edit Kategori";
+		$data['Content'] = "Kategori/KategoriManage";
 
 		$this->load->view('layouts/template',$data);
-	}
-
-	public function SubmitEdit()
-	{
-		$idkategori = $this->input->post('idkategori');
-		$record = array('nama' => $this->input->post('nmkategori'),
-						'keterangan' => $this->input->post('ktkategori'),
-						'status' => 1
-		);
-
-		$result = $this->mKategori->_UpdateKategori($idkategori,$record);
-		if ($result) { redirect(base_url('Mkategori_c/index')); } else { return false; }
 	}
 
 	public function Hapus($idkategori)
 	{
 		$result = $this->mKategori->_HapusKategori($idkategori);
-		if ($result) { redirect(base_url('Mkategori_c/index')); } else { return false; }
+		if ($result) { redirect(base_url('mkategori_c/index')); } else { return false; }
 	}
 }
 

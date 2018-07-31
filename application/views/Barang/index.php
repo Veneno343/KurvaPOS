@@ -2,7 +2,7 @@
     <div class="box">
     <div class="box-header">
       <h2>Daftar Barang</h2>
-      <small>Berikut adalah daftar barang.<br><a href="<?php echo base_url('Inventory_C/TambahBarang') ?>"><i class="fa fa-plus-square">&nbsp;Klik di sini untuk menambahkan</i></a></small>
+      <small>Berikut adalah daftar barang.<br><a href="<?php echo base_url('mbarang_c/Tambah') ?>"><i class="fa fa-plus-square">&nbsp;Klik di sini untuk menambahkan</i></a></small>
     </div>
     <div class="box-body">
       Cari : <input id="filter" type="text" class="form-control input-sm w-auto inline m-r"/>
@@ -34,9 +34,8 @@
               <td><?php echo $Barang->namabrg; ?></td>
               <td><?php echo $Barang->katbrg; ?></td>
               <td>
-                  <button id="tmbDetail" class="btn btn-outline rounded b-primary text-primary"><i class="fa fa-plus"></i></button>
-                  <button id="editBarang" class="btn btn-outline rounded b-warning text-warning"><i class="fa fa-pencil"></i></button>
-                  <button id="hapusBarang" class="btn btn-outline rounded b-danger text-danger"><i class="fa fa-trash"></i></button>
+                  <a href="<?php echo base_url('mbarang_c/edit/').$Barang->idbrg; ?>" id="editBarang" class="btn btn-outline rounded b-warning text-warning"><i class="fa fa-pencil"></i></a>
+                  <a onclick="return confirm('Hapus data?');" href="<?php echo base_url('mbarang_c/hapus/').$Barang->idbrg; ?>" id="hapusBarang" class="btn btn-outline rounded b-danger text-danger"><i class="fa fa-trash"></i></a>
               </td>
           </tr>
         <?php 
