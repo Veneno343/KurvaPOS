@@ -54,9 +54,12 @@ class Tpembelian_c extends CI_Controller
 	public function Tambah()
 	{
 		$data = array('id' => '',
+					  'nopembelian' => '',
 					  'tanggal' => '',
 					  'idsupplier' => '',
-					  'gudang' => ''
+					  'idgudang' => '',
+					  'totalbarang' => '',
+					  'totalharga' => ''
 		);
 		
 		$data['Title'] = "Tambah Pembelian";
@@ -68,22 +71,25 @@ class Tpembelian_c extends CI_Controller
 		$this->load->view('layouts/template',$data);
 	}
 
-	public function Edit($idbarang)
+	public function Edit($idpembelian)
 	{
-		$this->load->model('Mkategori_m','mKategori');
-		$value = $this->tPembelian->getBarangID($idbarang);
+		$value = $this->tPembelian->getPembelianID($idpembelian);
 
 		$data = array('id' => $value->id,
-					  'foto' => $value->foto,
-					  'nama' => $value->nama,
-					  'status' => $value->status
-
+					  'nopembelian' => $value->nopembelian,
+					  'tanggal' => $value->tanggal,
+					  'idsupplier' => $value->idsupplier,
+					  'idgudang' => $value->idgudang,
+					  'totalbarang' => $value->totalbarang,
+					  'totalharga' => $value->totalharga
 		);
 		
-		$data['Title'] = "Edit Barang";
-		$data['DetailBarang'] = $this->tPembelian->getBarangDetail($idbarang);
-		$data['DataKategori'] = $this->mKategori->getKategori();
-		$data['Content'] = "Barang/BarangManage";
+		$data['Title'] = "Edit Pembelian";
+		$data['DataSupplier'] = $this->mSupplier->getSupplier();
+		$data['DataGudang'] = $this->mGudang->getGudang();
+		$data['DataBarang'] = $this->mBarang->getBarang();
+		$data['DetailPembelian'] = $this->tPembelian->getPembelianDetailID($idpembelian);
+		$data['Content'] = "Pembelian/PembelianManage";
 
 		$this->load->view('layouts/template',$data);
 	}
@@ -97,6 +103,7 @@ class Tpembelian_c extends CI_Controller
 								  	 'tanggal' => $this->input->post('tanggal'), 
 							      	 'idsupplier' => $this->input->post('idsupplier'),
 									 'idgudang' => $this->input->post('idgudang'),
+									 'totalharga' => $this->input->post('totalsemua'),
 									 'totalbarang' => $this->input->post('totalbarang'),  
 									 'status' => 1
 			);
@@ -110,6 +117,7 @@ class Tpembelian_c extends CI_Controller
 								  	 'tanggal' => $this->input->post('tanggal'), 
 							      	 'idsupplier' => $this->input->post('idsupplier'),
 									 'idgudang' => $this->input->post('idgudang'),
+									 'totalharga' => $this->input->post('totalsemua'),
 									 'totalbarang' => $this->input->post('totalbarang'),  
 									 'status' => 1
 			);
@@ -122,19 +130,19 @@ class Tpembelian_c extends CI_Controller
 
 		}		
 	}
-
-	public function hapusDetail($id)
+	
+	/* public function hapusDetail($id)
 	{
 		$result = $this->tPembelian->deleteDetail($id);
 		if($result) { redirect($this->agent->referrer()); } else { return false; }
-	}
-
+	} */
+	
 	public function Hapus($id)
 	{
 		$result = $this->tPembelian->HapusPembelian($id);
 		if($result) { redirect(base_url('tPembelian_c/index')); } else { return false; }
 	}
-
+	
 }
 
 ?>

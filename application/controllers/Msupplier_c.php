@@ -20,6 +20,32 @@ class Msupplier_c extends CI_Controller
 
 	public function Tambah()
 	{
+		$data = array('id' => '',
+					  'nama' => '',
+					  'alamat' => '',
+					  'telepon' => '',
+					  'email' => '',
+		);
+
+
+		$data['Title'] = "Tambah Supplier";
+		$data['Content'] = "Supplier/SupplierManage";
+
+		$this->load->view('layouts/template',$data);
+	}
+
+	public function Edit($idsupplier)
+	{
+		$value = $this->mSupplier->getSupplierID($idsupplier);
+		$data = array('id' => $value->id,
+					  'nama' => $value->nama, 
+					  'alamat' => $value->alamat,
+					  'telepon' => $value->telepon,
+					  'email' => $value->email,
+					  'status' => $value->status,
+				);
+
+		$data['Title'] = "Edit Supplier";
 		$data['Content'] = "Supplier/SupplierManage";
 
 		$this->load->view('layouts/template',$data);
@@ -50,23 +76,6 @@ class Msupplier_c extends CI_Controller
 			$result = $this->mSupplier->_UpdateSupplier($idSupplier,$record);
 			if ($result) { redirect(base_url('msupplier_c/index')); } else { return false; }
 		}
-	}
-
-	public function Edit($idsupplier)
-	{
-		$value = $this->mSupplier->getSupplierID($idsupplier);
-		$data = array('id' => $value->id,
-					  'nama' => $value->nama, 
-					  'alamat' => $value->alamat,
-					  'telepon' => $value->telepon,
-					  'email' => $value->email,
-					  'status' => $value->status,
-				);
-
-		$data['Title'] = "Edit Supplier";
-		$data['Content'] = "Supplier/SupplierManage";
-
-		$this->load->view('layouts/template',$data);
 	}
 
 	public function Hapus($idSupplier)

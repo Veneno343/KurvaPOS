@@ -8,14 +8,14 @@
       <div class="box-divider m-a-0"></div>
 
       <div class="box-body">
-        <form role="form" method="post" action="<?php echo base_url('mbarang_c/Submit') ?>" id="form-barang">
-          <input type="hidden" name="idbarang" value="<?php echo $id; ?>"></input>
+        <form role="form" method="post" action="<?php echo base_url('tpembelian_c/Submit') ?>" id="form-pembelian">
+          <input type="hidden" name="idpembelian" value="<?php echo $id; ?>"></input>
           <?php  
             if($this->uri->segment(2) == 'edit') {
           ?>
           <div class="form-group">
-          <label>No Pembelian</label>
-                <input type="text" name="nmbarang" class="form-control" value="<?php echo $nop; ?>" disabled required/>
+            <label>No Pembelian</label>
+            <input type="text" name="nopembelian" class="form-control" value="<?php echo $nopembelian; ?>" disabled required/>
           </div>
           <?php 
             }
@@ -23,7 +23,7 @@
           <div class="form-group">
             <label for="">Tanggal</label>
             <div class='input-group date' data-ui-jp="datetimepicker" data-ui-options="{
-                  format: 'DD/MM/YYYY',
+                  format: 'YYYY/MM/DD',
                   icons: {
                     time: 'fa fa-clock-o',
                     date: 'fa fa-calendar',
@@ -36,7 +36,7 @@
                     close: 'fa fa-remove'
                   }
                 }">
-                <input type='text' name="tanggal" class="form-control" />
+                <input type='text' name="tanggal" class="form-control" value="<?php echo $tanggal; ?>" required/>
                 <span class="input-group-addon">
                     <span class="fa fa-calendar"></span>
                 </span>
@@ -65,6 +65,7 @@
                     ?>
                 </select>
           </div>
+          
           <div class="block-content">
             <input type="hidden" class="form-control" id="rowIndex">
             <table class="table m-b-none" id="data-detail"  width="100%">
@@ -135,9 +136,14 @@
                       foreach($DetailPembelian as $Detail) {
                 ?>
                 <tr>
-                  <td><?php echo $Detail->ukuran; ?></td>
-                  <td><?php echo $Detail->warna; ?></td>
-                  <td>
+                  <td style="display:none"><?php echo $Detail->idbarang; ?></td>
+                  <td width="15%"><?php echo $Detail->namabarang; ?></td>
+                  <td width="10%"><?php echo $Detail->warna; ?></td>
+                  <td width="10%"><?php echo $Detail->ukuran; ?></td>
+                  <td width="15%"><?php echo $Detail->harga; ?></td>
+                  <td width="10%" class="qtbarang"><?php echo $Detail->kuantitas; ?></td>
+                  <td width="15%" class="totalharga"><?php echo $Detail->total; ?></td>
+                  <td width="15%">
                     <button type='button' class='btn btn-warning editRow' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></button>&nbsp;
                     <button type='button' class='btn btn-danger deleteRow' data-toggle='tooltip' title='Delete'><i class='fa fa-trash'></i></button>
                   </td>
@@ -148,25 +154,63 @@
                   }
                 ?>
               </tbody>
-              <tfoot>
-                <tr>
-                  <th>Total Keseluruhan : Rp </th>
-                  <th><p id="totalsemua"></p></th>
-                </tr>
-              </tfoot>
             </table>
           </div>
-          <input type="hidden" id="totalbarang" name="totalbarang">
-          <input type="hidden" id="detail_value" name="detail_value">
-          <button type="submit" id="submitData" name="Simpan" class="btn white m-b">Simpan</button>
-        </form>
       </div>
-    </div>
+      
+      <div class="box-divider m-a-0"></div>
+
+      <div class="box-body">
+            <div class="col-md-6">
+              Total Keseluruhan : Rp
+              <input class="form-control" name="totalsemua" id="totalsemua" value="">
+            </div>
+            <div class="col-md-6">
+              Total Barang :
+              <input class="form-control" name="totalbarang" id="totalbarang" value="">
+            
+            <br>
+            <input type="hidden" id="detail_value" name="detail_value">
+            </div>
+            <button type="submit" id="submitData" name="Simpan" class="btn white m-b">Simpan</button>
+            
+          </form>
+        </div>
+      </div>
 </div>
+
 
 
 <script>
 $(document).ready(function() {
+
+  var totalsemua = 0;
+  var totalbarang = 0;
+
+  function SumTotalHarga() {
+    $(".totalharga").each(function() {
+      var value = $(this).text();
+      totalsemua += parseInt(value);
+    });
+  }
+
+  function SumTotalBarang() {
+    $(".qtbarang").each(function() {
+      var value = $(this).text();
+      totalbarang += parseInt(value);
+    });
+  }
+
+  function LoadHarga() {
+    SumTotalBarang();
+    SumTotalHarga();
+    
+    $("#totalsemua").val(totalsemua);
+    $("#totalbarang").val(totalbarang);
+  }
+
+  LoadHarga();
+
   $('#tambah-detail').click(function() {
     var isValid = validate_data();
     if (!isValid) return false;
@@ -193,47 +237,69 @@ $(document).ready(function() {
     }
 
     if (isDuplicate == false) {
+      dataContent += "<td style='display:none'>" + $("#barangid").val() + "</td>";
       dataContent += "<td style='width:10%'>" + $("#namabarang").val() + "</td>";
       dataContent += "<td style='width:10%'>" + $("#nmwarna").val() + "</td>";
       dataContent += "<td style='width:10%'>" + $("#nmukuran").val() + "</td>";
       dataContent += "<td style='width:10%'>" + $("#hgbarang").val() + "</td>";
-      dataContent += "<td style='width:10%'>" + $("#qtbarang").val() + "</td>";
-      dataContent += "<td style='width:10%'>" + $("#totalharga").val() + "</td>";
+      dataContent += "<td style='width:10%' class='qtbarang'>" + $("#qtbarang").val() + "</td>";
+      dataContent += "<td style='width:10%' class='totalharga'>" + $("#totalharga").val() + "</td>";
       dataContent += "<td style='width:10%'><button type='button' class='btn btn-outline b-warning text-warning editRow' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></button>&nbsp;";
       dataContent += "<button type='button' class='btn btn-outline b-danger text-danger deleteRow' data-toggle='tooltip' title='Hapus'><i class='fa fa-trash'></i></button></td>";
       
       if($("#rowIndex").val() != '') {
         $('#data-detail tbody tr:eq(' + rowSelect + ')').html(dataContent);
-        rowSelect = '';
+        $("#rowIndex").val('');
       } else {
         dataContent += "</tr>";
         $('#data-detail tbody').append(dataContent);
       }
 
       clear_data();
+      
+      totalsemua = 0;
+      totalbarang = 0;
+      SumTotalHarga();
+      SumTotalBarang();
+      $("#totalsemua").val(totalsemua);
+      $("#totalbarang").val(totalbarang);
     }
   });
   
   $(document).on('click', '.editRow', function() {
     $("#rowIndex").val($(this).closest('tr')[0].sectionRowIndex);
-
-    $("#ukuran").val($(this).closest('tr').find("td:eq(0)").html());
-    $("#warna").val($(this).closest('tr').find("td:eq(1)").html());
-
+    
+    $("#barangid").val($(this).closest('tr').find("td:eq(0)").html());
+    $("#warna").val($(this).closest('tr').find("td:eq(2)").html());
+    $("#ukuran").val($(this).closest('tr').find("td:eq(3)").html());
+    $("#hgbarang").val($(this).closest('tr').find("td:eq(4)").html());
+    $("#qtbarang").val($(this).closest('tr').find("td:eq(5)").html());
+    $("#totalharga").val($(this).closest('tr').find("td:eq(6)").html());
+    
+    
     return false;
   });
 
   $(document).on('click', '.deleteRow', function() {
     if(confirm("Hapus data yang dipilih?") == true) {
       $(this).closest('td').parent().remove();
+      
+      totalsemua = 0;
+      totalbarang = 0;
+      SumTotalHarga();
+      SumTotalBarang();
+      $("#totalsemua").val(totalsemua);
+      $("#totalbarang").val(totalbarang);
     }
 
     return false;    
   });
 
   function clear_data(){
-    $('#ukuran').val('');
-    $('#warna').val('');
+    $('#hgbarang').val('');
+    $('#qtbarang').val('');
+    $('#totalharga').val('');
+    
   }
 
   function validate_data(){
@@ -258,12 +324,10 @@ $(document).ready(function() {
 
     alert('Berhasil menyimpan data!');
   });
-  
-  $("#loading").hide();
 
   $("#barangid").change(function() {
     $("#namabarang").val(this.options[this.selectedIndex].text);
-
+    
     $.ajax({
       type : "POST",
       url : "<?php echo base_url('tpembelian_c/getWarnaBarang/');?>" + $("#barangid").val(),
@@ -273,7 +337,7 @@ $(document).ready(function() {
         $("#nmwarna").html(response.list_warna).show();
       },
 
-      error : function (xhr,ajaxOptions,thrownError) {
+      error : function (  xhr,ajaxOptions,thrownError) {
         alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
       }
 

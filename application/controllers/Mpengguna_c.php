@@ -22,10 +22,12 @@ class Mpengguna_C extends CI_Controller
 	{
 		$data = array('id' => '', 
 					  'nama' => '',
+					  'username' => '',
 					  'password' => '',
 					  'status' => ''
 				);
-		$data['Content'] = "Pengguna/PenggunaTambah";
+		$data['Title'] = "Tambah Pengguna";
+		$data['Content'] = "Pengguna/PenggunaManage";
 
 		$this->load->view('layouts/template',$data);
 	}

@@ -48,9 +48,11 @@ class Mbarang_m extends CI_Model
             }
 
             return true;
+        } else {
+            return false;
         }
 
-        return false;
+        
     }
 
     public function _EditBarang($id,$record,$detail)

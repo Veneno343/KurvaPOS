@@ -153,13 +153,7 @@
             <a class="dropdown-item" href="app.inbox.html">
               <span>Inbox</span>
             </a>
-            <a class="dropdown-item" href="app.message.html">
-              <span>Message</span>
-            </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="docs.html">
-              Need help?
-            </a>
             <a class="dropdown-item" href="signin.html">Sign out</a>
           </div>
         </div>
@@ -172,7 +166,7 @@
   <div id="content" class="app-content box-shadow-z2 bg pjax-container" role="main">
     <!-- FOOTER -->
     <div class="app-footer white bg p-a b-t">
-        <div class="pull-right text-sm text-muted">Version : 0.0.1</div>
+        <div class="pull-right text-sm text-muted">Version : 0.0.8</div>
         <span class="text-sm text-muted">&copy; Copyright Kurvasoft : 2018 - 2019.</span>
     </div>
     <!-- END OF FOOTER -->
